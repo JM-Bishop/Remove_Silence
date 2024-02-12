@@ -67,28 +67,29 @@ class SilenceRemoverApp:
         messagebox.showinfo("Process Completed", message)
 
 
-    def remove_silence(input_file, output_file):
-        # Get the directory of the current script
-        current_dir = os.path.dirname(os.path.realpath(__file__))
-        # Construct the full path to the FFmpeg executable
-        ffmpeg_path = os.path.join(current_dir, "ffmpeg")
+    def remove_silence(self, input_file, output_file):
+    # Get the directory of the current script
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    # Construct the full path to the FFmpeg executable
+    ffmpeg_path = os.path.join(current_dir, "ffmpeg")  # Adjust the executable name if necessary (e.g., "ffmpeg.exe" on Windows)
 
-        # Modify the command to use the full path to FFmpeg
-        command = [
-            ffmpeg_path,  # Use the full path for FFmpeg
-            '-i', input_file,
-            '-af', 'silenceremove=1:0:-50dB',
-            output_file
-        ]
+    # Modify the command to use the full path to FFmpeg
+    command = [
+        ffmpeg_path,  # Use the full path for FFmpeg
+        '-i', input_file,
+        '-af', 'silenceremove=1:0:-50dB',
+        output_file
+    ]
 
     try:
         # Execute the FFmpeg command
         subprocess.run(command, check=True)
-        print(f"Silence removed from {input_file}. Output saved to {output_file}.")
+        return "Silence removed from " + input_file + ". Output saved to " + output_file + "."
     except subprocess.CalledProcessError as e:
-        print(f"Error processing file {input_file}: {e}")
+        return "Error processing file " + input_file + ": " + str(e)
     except Exception as e:
-        print(f"An error occurred: {e}")
+        return "An error occurred: " + str(e)
+
 
 
 # Main script execution
